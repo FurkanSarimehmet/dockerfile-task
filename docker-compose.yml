@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: petclinic-db
+    restart: always
+    environment:
+      POSTGRES_USER: petclinic
+      POSTGRES_PASSWORD: petclinicpass
+      POSTGRES_DB: petclinicdb
+    ports:
+      - "5432:5432"
+
+  app:
+    image: petclinic-app
+    container_name: petclinic-container
+    restart: always
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/petclinicdb
+      SPRING_DATASOURCE_USERNAME: petclinic
+      SPRING_DATASOURCE_PASSWORD: petclinicpass
+    ports:
+      - "8080:8080"
